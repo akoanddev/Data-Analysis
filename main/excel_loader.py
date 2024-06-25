@@ -12,10 +12,11 @@ class ExcelLoader:
         """
         self.file_path = None
         self.dataframe = None
+        self.dataheader = None
     
     def get_excel_file_path(self):
         #hide the root window
-        Tk().withdraw()
+#        Tk().withdraw()
         self.file_path = askopenfilename (title = "Select an Excel Data File", filetypes = [("Excel files", "*.xlsx *.xls"), ("All files", "*.*")])
         if not self.file_path:
             print("No file selected.")
@@ -25,30 +26,31 @@ class ExcelLoader:
         """
         Loads the selected Excel file into a DataFrame.
         """
-        if self.file_path:
-            self.dataframe = pd.read_excel(self.file_path)
-            print(f"Loaded file: {self.file_path}")
-        else:
-            print("No file selected to load.")
+        self.dataframe = pd.read_excel(self.file_path, header = None)
+        i = 0
+        for index, row in self.dataframe.iterrows():
+            if row.isnull().all() or (row == '').all():
+                i += 1
+            else:
+                break  # Stop at the first non-blank row
+                
+        self.dataheader = pd.read_excel(self.file_path, header=i)
+#            self.correlation_data = self.dataframe.corr()
+#            print (self.correlation_data.to_string())
 
+        
     def display_data(self):
         """
         Displays the first few rows of the loaded DataFrame.
         """
         if self.dataframe is not None:
-            print("Data Preview:")
-            print (self.dataframe.head())
+            print (self.dataheader.to_string())
             print (self.dataframe.to_string())
         else:
             print("No data to display.")
 
-# Create an instance of ExcelLoader
 excel_loader = ExcelLoader()
-
-# Use the get_excel_file_path method
 file_path = excel_loader.get_excel_file_path()
-
-# Load and display the data
 excel_loader.load_file()
 excel_loader.display_data()
 
