@@ -3,18 +3,9 @@ This will show GUI with various analysis methods as well as
 selection of Excel or CSV file types
 """
 
-"""
-This will show GUI with various analysis methods as well as
-selection of Excel or CSV file types
-"""
-
-"""
-This will show GUI with various analysis methods as well as
-selection of Excel or CSV file types
-"""
-
 import tkinter as tk
 from tkinter import ttk
+from excel_loader import ExcelLoader
 
 class InitialSelector:
 
@@ -47,14 +38,14 @@ class InitialSelector:
         tk.Radiobutton(self.root, text="CSV File", variable=self.file_type, value="CSV").grid(row=4, column=1, pady=10, sticky=tk.W)
 
         # Submit button
-        tk.Button(self.root, text="Submit", command=self.on_submit).grid(row=7, column=0, columnspan=2, pady=20)
+        tk.Button(self.root, text="Submit", command=self.on_submit).grid(row=7, column=0, columnspan=2, pady=30)
 
         self.root.mainloop()
 
     def on_submit(self):
         # Handle the submit button press here
-        print(f"Analysis Method: {self.analysis_method.get()}")
-        print(f"File Type: {self.file_type.get()}")
+        excel_loader = ExcelLoader()
+        ExcelLoader.get_file_path (self,self.file_type.get())
         # You can add more actions here
 
 if __name__ == "__main__":
